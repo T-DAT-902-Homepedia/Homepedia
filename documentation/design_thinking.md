@@ -4,6 +4,9 @@
 
 Le **Design Thinking** est une méthode de résolution de problèmes centrée sur l'utilisateur. Elle permet de concevoir des solutions innovantes en plaçant les besoins et les expériences des utilisateurs au cœur du processus de création. Pour le projet Homepedia, cette approche nous permettra de concevoir une application véritablement utile et intuitive pour les personnes souhaitant s'informer sur le marché immobilier en France.
 
+> [!TIP]
+> Thinking like a designer can transform the way organizations develop products, services, processes, and strategy. This approach, which is known as **design thinking**, brings together what is desirable from a human point of view with what is technologically feasible and economically viable. It also allows people who aren't trained as designers to use creative tools to address a vast range of challenges.
+
 ---
 
 ## Les 5 étapes du Design Thinking
