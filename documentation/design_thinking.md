@@ -11,6 +11,8 @@ Le **Design Thinking** est une méthode de résolution de problèmes centrée su
 
 ## Les 5 étapes du Design Thinking
 
+<img width="1339" height="634" alt="image" src="https://github.com/user-attachments/assets/7126e8f7-8587-4923-a8c9-e81912aa4933" />
+
 ### 1. Empathie (*Empathize*)
 
 L'objectif de cette étape est de comprendre profondément les besoins, les attentes et les frustrations des utilisateurs cibles.
