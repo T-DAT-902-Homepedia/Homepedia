@@ -4,7 +4,7 @@ default:
 up ENV:
     #!/bin/bash
     if [ "{{ENV}}" = "doc" ]; then
-        docker compose -f docker/doc/compose.yml up --detach
+        docker compose -f documentation/compose.yml up --detach
     else
         echo "{{ENV}}: Accepted values are: 'doc'." >&2
     fi
@@ -12,7 +12,7 @@ up ENV:
 down ENV:
     #!/bin/bash
     if [ "{{ENV}}" = "doc" ]; then
-        docker compose -f docker/doc/compose.yml down --volumes
+        docker compose -f documentation/compose.yml down --volumes
     else
         echo "{{ENV}}: Accepted values are: 'doc'." >&2
     fi
@@ -20,7 +20,7 @@ down ENV:
 logs ENV:
     #!/bin/bash
     if [ "{{ENV}}" = "doc" ]; then
-        docker compose -f docker/{{ENV}}/compose.yml logs --follow
+        docker compose -f documentation/compose.yml logs --follow
     else
         echo "{{ENV}}: Accepted values are: 'doc'." >&2
     fi
