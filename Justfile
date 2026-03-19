@@ -1,7 +1,8 @@
 default:
     just --list
 
-up ENV: # doc | dev | prod
+# ENV = {doc | dev | prod}
+up ENV:
     #!/bin/bash
     if [ "{{ENV}}" = "doc" ]; then
         docker compose -f docker/{{ENV}}/compose.yml up --detach
@@ -13,7 +14,8 @@ up ENV: # doc | dev | prod
         echo "{{ENV}}: Accepted values are: 'doc|dev|prod'." >&2
     fi
 
-down ENV: # doc | dev | prod
+# ENV = {doc | dev | prod}
+down ENV:
     #!/bin/bash
     if [ "{{ENV}}" = "doc" ]; then
         docker compose -f docker/doc/compose.yml up --detach
@@ -25,6 +27,7 @@ down ENV: # doc | dev | prod
         echo "{{ENV}}: Accepted values are: 'doc|dev|prod'." >&2
     fi
 
+# ENV = {doc | dev | prod}
 logs ENV:
     #!/bin/bash
     if [ "{{ENV}}" = "doc" ]; then
