@@ -2,16 +2,31 @@ services:
   webapp:
     build:
       context: webapp
-      dockerfile: webapp/docker/dev/Dockerfile
+      dockerfile: docker/dev/Dockerfile
     container_name: homepedia-webapp-dev
     ports:
       - "5173:5173"
     volumes:
-      - .:/app
+      - ./webapp:/app
       # Préserver les node_modules du container (évite l'écrasement par le bind mount)
       - /app/node_modules
     environment:
       - NODE_ENV=development
       # Variables Vite à définir si nécessaire :
       # - VITE_MAPBOX_TOKEN=your_token_here
+    restart: unless-stopped
+
+  api:
+    build:
+      context: api
+      dockerfile: docker/dev/Dockerfile
+    container_name: homepedia-api-dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/app
+      # Préserver le venv du container (évite l'écrasement par le bind mount)
+      - /app/.venv
+    environment:
+      - ENV=development
     restart: unless-stopped
