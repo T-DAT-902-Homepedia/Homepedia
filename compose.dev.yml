@@ -1,13 +1,15 @@
+name: homepedia
+
 services:
   webapp:
     build:
       context: webapp
-      dockerfile: webapp/docker/dev/Dockerfile
+      dockerfile: docker/dev/Dockerfile
     container_name: homepedia-webapp-dev
     ports:
       - "5173:5173"
     volumes:
-      - .:/app
+      - ./webapp:/app
       # Préserver les node_modules du container (évite l'écrasement par le bind mount)
       - /app/node_modules
     environment:
