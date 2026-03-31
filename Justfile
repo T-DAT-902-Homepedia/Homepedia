@@ -40,4 +40,7 @@ logs ENV:
         echo "{{ENV}}: Accepted values are: 'doc|dev|prod'." >&2
     fi
 
+shell ENV:
+    docker compose -f compose.{{ENV}}.yml exec -it webapp sh
+
 
