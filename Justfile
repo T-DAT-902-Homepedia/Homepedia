@@ -7,7 +7,7 @@ up ENV:
     if [ "{{ENV}}" = "doc" ]; then
         docker compose -f docker/{{ENV}}/compose.yml up --detach
     elif [ "{{ENV}}" = "dev" ]; then
-        docker compose -f compose.dev.yml up --detach
+        UID=$(id -u) GID=$(id -g) docker compose -f compose.dev.yml up --detach --build
     elif [ "{{ENV}}" = "prod" ]; then
         docker compose -f compose.prod.yml up --detach --build
     else
