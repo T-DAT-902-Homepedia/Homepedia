@@ -11,4 +11,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    // En dev, /api est relayé vers l'API FastAPI (compose.data.yml -> port 8000).
+    proxy: {
+      "/api": {
+        target: process.env.VITE_API_TARGET ?? "http://localhost:8000",
+        changeOrigin: true,
+      },
+    },
+  },
 })

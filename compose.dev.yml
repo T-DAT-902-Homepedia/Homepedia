@@ -15,6 +15,11 @@ services:
       - ./webapp:/app
     environment:
       - NODE_ENV=development
+      # Cible du proxy Vite pour /api. L'API tourne via compose.data.yml ;
+      # depuis le conteneur webapp, on l'atteint par l'hôte.
+      - VITE_API_TARGET=http://host.docker.internal:8000
       # Variables Vite à définir si nécessaire :
       # - VITE_MAPBOX_TOKEN=your_token_here
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
