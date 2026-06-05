@@ -1,0 +1,36 @@
+"""Hooks projet — initialisation de la SparkSession.
+
+La session est créée une fois après le démarrage du contexte Kedro, à partir de
+``conf/base/spark.yml`` (config publique) et des credentials MinIO de
+``conf/local/credentials.yml`` (endpoint + clés S3A, non commités).
+"""
+
+from kedro.framework.context import KedroContext
+from kedro.framework.hooks import hook_impl
+from pyspark import SparkConf
+from pyspark.sql import SparkSession
+
+
+class SparkHooks:
+    @hook_impl
+    def after_context_created(self, context: KedroContext) -> None:
+        spark_conf = SparkConf().setAll(
+            list(context.config_loader["spark"].items())
+        )
+
+        # Injection des accès MinIO/S3A depuis les credentials locaux : on garde
+        # endpoint + clés hors du fichier spark.yml versionné.
+        minio = context.config_loader["credentials"].get("minio", {})
+        if endpoint := minio.get("endpoint"):
+            spark_conf.set("spark.hadoop.fs.s3a.endpoint", endpoint)
+        if access_key := minio.get("access_key"):
+            spark_conf.set("spark.hadoop.fs.s3a.access.key", access_key)
+        if secret_key := minio.get("secret_key"):
+            spark_conf.set("spark.hadoop.fs.s3a.secret.key", secret_key)
+
+        spark_session = (
+            SparkSession.builder.appName(context.project_path.name)
+            .config(conf=spark_conf)
+            .getOrCreate()
+        )
+        spark_session.sparkContext.setLogLevel("WARN")
