@@ -20,6 +20,10 @@ dependencies = [
     "seaborn~=0.12.1",
     "httpx>=0.28.1",
     "duckdb>=1.5.3",
+    # Dépendances runtime des pipelines Spark/geo (alignées avec requirements.txt).
+    "hdfs>=2.7",
+    "s3fs>=2023.1",
+    "psycopg[binary]>=3.2",
 ]
 
 [project.scripts]
