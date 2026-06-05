@@ -7,6 +7,8 @@ conf/local/**
 
 # ignore potentially sensitive credentials files
 conf/**/*credentials*
+# sauf l'env docker : sans secret littéral (uniquement ${oc.env:...}), doit être suivi
+!conf/docker/credentials.yml
 
 # ignore everything in the following folders
 data/**

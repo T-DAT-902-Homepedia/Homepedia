@@ -24,6 +24,7 @@ HOOKS = (DvfHooks(),)
 
 # Class that manages how configuration is loaded.
 from kedro.config import OmegaConfigLoader  # noqa: E402
+from omegaconf.resolvers import oc  # noqa: E402
 
 CONFIG_LOADER_CLASS = OmegaConfigLoader
 # Keyword arguments to pass to the `CONFIG_LOADER_CLASS` constructor.
@@ -33,6 +34,12 @@ CONFIG_LOADER_ARGS = {
     # Permet à config_loader["spark"] de charger conf/*/spark*.yml.
     "config_patterns": {
         "spark": ["spark*", "spark*/**"],
+    },
+    # Active ${oc.env:VAR,defaut} hors credentials (où il est déjà actif par
+    # défaut) — notamment pour les URLs JDBC du catalog. Défauts = localhost,
+    # donc un `kedro run` local reste inchangé ; le conteneur surcharge via env.
+    "custom_resolvers": {
+        "oc.env": oc.env,
     },
 }
 

@@ -43,7 +43,7 @@ silver_biens_ppm2:
 # --- GOLD (PostGIS via JDBC) ----------------------------------------------
 gold_agg_commune:
   type: spark.SparkJDBCDataset
-  url: jdbc:postgresql://localhost:5432/homepedia
+  url: jdbc:postgresql://${oc.env:POSTGRES_HOST,localhost}:${oc.env:POSTGRES_PORT,5432}/${oc.env:POSTGRES_DB,homepedia}
   table: agg_commune
   credentials: postgis
   save_args:
@@ -53,7 +53,7 @@ gold_agg_commune:
 
 gold_agg_departement:
   type: spark.SparkJDBCDataset
-  url: jdbc:postgresql://localhost:5432/homepedia
+  url: jdbc:postgresql://${oc.env:POSTGRES_HOST,localhost}:${oc.env:POSTGRES_PORT,5432}/${oc.env:POSTGRES_DB,homepedia}
   table: agg_departement
   credentials: postgis
   save_args:
@@ -63,7 +63,7 @@ gold_agg_departement:
 
 gold_transactions:
   type: spark.SparkJDBCDataset
-  url: jdbc:postgresql://localhost:5432/homepedia
+  url: jdbc:postgresql://${oc.env:POSTGRES_HOST,localhost}:${oc.env:POSTGRES_PORT,5432}/${oc.env:POSTGRES_DB,homepedia}
   table: transactions
   credentials: postgis
   save_args:
