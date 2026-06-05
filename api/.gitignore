@@ -1,0 +1,12 @@
+# Environnement Python local
+.venv/
+__pycache__/
+*.pyc
+
+# Configuration locale (secrets) — garde .env.example suivi.
+.env
+.env.local
+!.env.example
+
+# Caches outils
+.ruff_cache/
