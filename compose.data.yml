@@ -63,6 +63,22 @@ services:
       retries: 10
     restart: unless-stopped
 
+  # API read-only des données DVF (choroplèthe prix/m²).
+  api:
+    build:
+      context: ./api
+    container_name: homepedia-api
+    depends_on:
+      postgis:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      # En conteneur, la base est jointe via le réseau compose (service `postgis`).
+      API_DATABASE_URL: "postgresql://${POSTGRES_USER:-homepedia}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD requis}@postgis:5432/${POSTGRES_DB:-homepedia}"
+      API_CORS_ORIGINS: '["http://localhost:5173"]'
+    restart: unless-stopped
+
 volumes:
   minio_data:
   postgis_data:
