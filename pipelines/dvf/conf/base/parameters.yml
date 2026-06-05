@@ -26,3 +26,16 @@ ppm2_clip_quantiles:
 # Une commune avec moins de ce nombre de transactions est marquée fiable=false
 # (médiane locale peu robuste) — marquée, jamais supprimée.
 seuil_fiabilite_commune: 5
+
+# Contours administratifs (pipeline geo). Niveaux pré-simplifiés Etalab 2025,
+# EPSG:4326. low=1000m (dézoom national), mid=100m, high=50m (zoom local).
+# Propriétés GeoJSON : code (INSEE), nom, departement (communes uniquement).
+contours_etalab:
+  communes:
+    low: https://etalab-datasets.geo.data.gouv.fr/contours-administratifs/2025/geojson/communes-1000m.geojson
+    mid: https://etalab-datasets.geo.data.gouv.fr/contours-administratifs/2025/geojson/communes-100m.geojson
+    high: https://etalab-datasets.geo.data.gouv.fr/contours-administratifs/2025/geojson/communes-50m.geojson
+  departements:
+    low: https://etalab-datasets.geo.data.gouv.fr/contours-administratifs/2025/geojson/departements-1000m.geojson
+    mid: https://etalab-datasets.geo.data.gouv.fr/contours-administratifs/2025/geojson/departements-100m.geojson
+    high: https://etalab-datasets.geo.data.gouv.fr/contours-administratifs/2025/geojson/departements-50m.geojson
