@@ -77,6 +77,17 @@ services:
       # En conteneur, la base est jointe via le réseau compose (service `postgis`).
       API_DATABASE_URL: "postgresql://${POSTGRES_USER:-homepedia}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD requis}@postgis:5432/${POSTGRES_DB:-homepedia}"
       API_CORS_ORIGINS: '["http://localhost:5173"]'
+    # Healthcheck via la stdlib Python (pas de curl garanti dans l'image slim).
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/healthz').status==200 else 1)"
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     restart: unless-stopped
 
 volumes:

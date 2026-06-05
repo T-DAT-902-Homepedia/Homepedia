@@ -1,0 +1,68 @@
+name: homepedia
+
+# Orchestration unifiée de toute l'app sur un seul réseau :
+#   - infra + API : importées telles quelles depuis compose.data.yml
+#   - webapp (dev) : Vite hot-reload, atteint l'API par son nom de service
+#   - pipeline : job batch one-shot (profil `pipeline`, NON lancé au `up`)
+#
+# Démarrer l'app (infra + api + webapp) :
+#   UID=$(id -u) GID=$(id -g) docker compose -f compose.app.yml --env-file .env.data up -d
+# Peupler les données (une fois) :
+#   docker compose -f compose.app.yml --env-file .env.data --profile pipeline run --rm pipeline
+
+include:
+  - compose.data.yml # minio, minio-init, postgis, api
+
+services:
+  webapp:
+    build:
+      context: webapp
+      dockerfile: docker/dev/Dockerfile
+      args:
+        USER_UID: "${UID:?UID requis (UID=$(id -u) GID=$(id -g) ...)}"
+        USER_GID: "${GID:?GID requis}"
+    container_name: homepedia-webapp-dev
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./webapp:/app
+    environment:
+      - NODE_ENV=development
+      # Même réseau compose que l'API -> on l'atteint par son nom de service.
+      - VITE_API_TARGET=http://api:8000
+    restart: unless-stopped
+
+  # Pipeline Kedro (Bronze/Silver/Gold + geo). Job batch : profil `pipeline` ->
+  # exclu du `up`. Lancé à la demande pour (re)peupler MinIO + PostGIS.
+  pipeline:
+    build:
+      context: pipelines/dvf
+    image: homepedia-pipeline
+    container_name: homepedia-pipeline
+    profiles: ["pipeline"]
+    depends_on:
+      minio-init:
+        condition: service_completed_successfully
+      postgis:
+        condition: service_healthy
+    environment:
+      KEDRO_ENV: docker
+      MINIO_ENDPOINT: "http://minio:9000"
+      MINIO_ROOT_USER: "${MINIO_ROOT_USER:-homepedia}"
+      MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD:?MINIO_ROOT_PASSWORD requis}"
+      POSTGRES_HOST: postgis
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: "${POSTGRES_DB:-homepedia}"
+      POSTGRES_USER: "${POSTGRES_USER:-homepedia}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?POSTGRES_PASSWORD requis}"
+    volumes:
+      # CSV brut persisté côté hôte (téléchargé par ensure_raw_csv si absent).
+      - ./pipelines/dvf/data/01_raw:/app/data/01_raw
+      # Cache des JARs Spark (Ivy) : évite le re-téléchargement à chaque run.
+      - ivy_cache:/app/.ivy2
+
+volumes:
+  ivy_cache:

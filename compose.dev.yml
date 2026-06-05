@@ -1,5 +1,9 @@
 name: homepedia
 
+# Webapp SEULE (legacy / dev autonome). Suppose une API lancée séparément sur
+# l'hôte (d'où host.docker.internal). Pour l'app complète sur un réseau unifié
+# — webapp + API + infra + pipeline — utiliser plutôt compose.app.yml (où la
+# webapp atteint l'API par son nom de service `api`).
 services:
   webapp:
     build:

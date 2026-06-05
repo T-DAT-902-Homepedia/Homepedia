@@ -1,6 +1,32 @@
 default:
     just --list
 
+# --- App unifiée (infra + API + webapp dev + pipeline) ----------------------
+
+_app := "docker compose -f compose.app.yml --env-file .env.data"
+
+# Démarre infra + API + webapp (dev). Le pipeline n'est PAS lancé.
+app-up:
+    UID=$(id -u) GID=$(id -g) {{_app}} up -d --build
+
+# Arrête toute l'app.
+app-down:
+    {{_app}} down
+
+# Logs de toute l'app.
+app-logs:
+    {{_app}} logs -f
+
+# Lance le pipeline Kedro une fois (peuple MinIO + PostGIS) puis sort.
+pipeline:
+    UID=$(id -u) GID=$(id -g) {{_app}} --profile pipeline run --rm pipeline
+
+# Lance un sous-ensemble du pipeline. Ex : just pipeline-only geo
+pipeline-only PIPE:
+    UID=$(id -u) GID=$(id -g) {{_app}} --profile pipeline run --rm pipeline run --pipeline={{PIPE}}
+
+# --- Recettes legacy (webapp seule) -----------------------------------------
+
 # ENV = {doc | dev | prod}
 up ENV:
     #!/bin/bash
