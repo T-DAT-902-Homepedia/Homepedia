@@ -1,0 +1,4 @@
+# Variables d'environnement de l'infra données (secrets MinIO / PostGIS)
+.env
+.env.*
+!.env.*.example
