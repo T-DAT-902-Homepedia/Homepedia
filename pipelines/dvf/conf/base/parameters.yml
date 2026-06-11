@@ -1,8 +1,10 @@
 # Paramètres métier du pipeline DVF (cf. méthodologie validée en Phase 1).
 
-# Source du CSV brut Geo DVF 2025 (data.gouv.fr). Téléchargé par le node
+# Source du CSV brut Geo DVF (millésime 2024). Téléchargé par le node
 # ensure_raw_csv s'il est absent de data/01_raw/ (reproductibilité depuis un clone).
-geo_dvf_source_url: https://www.data.gouv.fr/api/1/datasets/r/316795eb-a3fa-465d-b058-38ef8579da11
+# NB : l'ID stable data.gouv (316795eb-…) redirige vers le listing du dossier,
+# qui renvoie 404 — seul le chemin direct du millésime est servi.
+geo_dvf_source_url: https://files.data.gouv.fr/geo-dvf/latest/csv/2024/full.csv.gz
 
 # Nombre de partitions Parquet en Bronze (le gzip source est non-splittable :
 # repartitionner débloque le parallélisme des étapes aval).
