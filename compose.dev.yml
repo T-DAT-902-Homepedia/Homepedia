@@ -1,8 +1,13 @@
+name: homepedia
+
 services:
   webapp:
     build:
       context: webapp
       dockerfile: docker/dev/Dockerfile
+      args:
+        USER_UID: "${UID:?}"
+        USER_GID: "${GID:?}"
     container_name: homepedia-webapp-dev
     ports:
       - "5173:5173"
