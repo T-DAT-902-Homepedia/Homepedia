@@ -5,7 +5,7 @@ default:
 up ENV:
     #!/bin/bash
     if [ "{{ENV}}" = "doc" ]; then
-        docker compose -f docker/{{ENV}}/compose.yml up --detach
+        docker compose -f documentation/compose.yml up --detach
     elif [ "{{ENV}}" = "dev" ]; then
         UID=$(id -u) GID=$(id -g) docker compose -f compose.dev.yml up --detach --build
     elif [ "{{ENV}}" = "prod" ]; then
@@ -18,7 +18,7 @@ up ENV:
 down ENV:
     #!/bin/bash
     if [ "{{ENV}}" = "doc" ]; then
-        docker compose -f docker/doc/compose.yml up --detach
+        docker compose -f documentation/compose.yml down --volumes
     elif [ "{{ENV}}" = "dev" ]; then
         docker compose -f compose.dev.yml down
     elif [ "{{ENV}}" = "prod" ]; then
@@ -31,7 +31,7 @@ down ENV:
 logs ENV:
     #!/bin/bash
     if [ "{{ENV}}" = "doc" ]; then
-        docker compose -f docker/{{ENV}}/compose.yml logs --follow
+        docker compose -f documentation/compose.yml logs --follow
     elif [ "{{ENV}}" = "dev" ]; then
         docker compose -f compose.dev.yml logs --follow
     elif [ "{{ENV}}" = "prod" ]; then
@@ -42,5 +42,3 @@ logs ENV:
 
 shell ENV:
     docker compose -f compose.{{ENV}}.yml exec -it webapp sh
-
-
