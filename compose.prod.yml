@@ -1,0 +1,11 @@
+services:
+  api:
+    build:
+      context: api
+      dockerfile: docker/prod/Dockerfile
+    container_name: homepedia-api-prod
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=production
+    restart: unless-stopped
