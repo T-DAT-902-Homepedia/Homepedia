@@ -1,46 +1,29 @@
 default:
     just --list
 
-# ENV = {doc | dev | prod}
+# ENV = {doc}
 up ENV:
     #!/bin/bash
     if [ "{{ENV}}" = "doc" ]; then
         docker compose -f docker/{{ENV}}/compose.yml up --detach
-    elif [ "{{ENV}}" = "dev" ]; then
-        UID=$(id -u) GID=$(id -g) docker compose -f compose.dev.yml up --detach --build
-    elif [ "{{ENV}}" = "prod" ]; then
-        docker compose -f compose.prod.yml up --detach --build
     else
-        echo "{{ENV}}: Accepted values are: 'doc|dev|prod'." >&2
+        echo "{{ENV}}: Accepted values are: 'doc'." >&2
     fi
 
-# ENV = {doc | dev | prod}
+# ENV = {doc}
 down ENV:
     #!/bin/bash
     if [ "{{ENV}}" = "doc" ]; then
-        docker compose -f docker/doc/compose.yml up --detach
-    elif [ "{{ENV}}" = "dev" ]; then
-        docker compose -f compose.dev.yml down
-    elif [ "{{ENV}}" = "prod" ]; then
-        docker compose -f compose.prod.yml down
+        docker compose -f docker/{{ENV}}/compose.yml down
     else
-        echo "{{ENV}}: Accepted values are: 'doc|dev|prod'." >&2
+        echo "{{ENV}}: Accepted values are: 'doc'." >&2
     fi
 
-# ENV = {doc | dev | prod}
+# ENV = {doc}
 logs ENV:
     #!/bin/bash
     if [ "{{ENV}}" = "doc" ]; then
         docker compose -f docker/{{ENV}}/compose.yml logs --follow
-    elif [ "{{ENV}}" = "dev" ]; then
-        docker compose -f compose.dev.yml logs --follow
-    elif [ "{{ENV}}" = "prod" ]; then
-        docker compose -f compose.prod.yml logs --follow
     else
-        echo "{{ENV}}: Accepted values are: 'doc|dev|prod'." >&2
+        echo "{{ENV}}: Accepted values are: 'doc'." >&2
     fi
-
-shell ENV:
-    docker compose -f compose.{{ENV}}.yml exec -it webapp sh
-
-
