@@ -7,7 +7,7 @@ up ENV:
     if [ "{{ENV}}" = "doc" ]; then
         docker compose -f documentation/compose.yml up --detach
     elif [ "{{ENV}}" = "dev" ]; then
-        UID=$(id -u) GID=$(id -g) docker compose -f compose.dev.yml up --detach --build
+        docker compose -f compose.dev.yml up --detach --build
     elif [ "{{ENV}}" = "prod" ]; then
         docker compose -f compose.prod.yml up --detach --build
     else
@@ -41,4 +41,4 @@ logs ENV:
     fi
 
 shell ENV:
-    docker compose -f compose.{{ENV}}.yml exec -it webapp sh
+    docker compose -f compose.{{ENV}}.yml exec -it api sh

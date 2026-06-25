@@ -1,16 +1,4 @@
 services:
-  webapp:
-    build:
-      context: webapp
-      dockerfile: docker/prod/Dockerfile
-      # Décommenter pour passer les variables au build Vite :
-      # args:
-      #   VITE_MAPBOX_TOKEN: ${VITE_MAPBOX_TOKEN}
-    container_name: homepedia-webapp-prod
-    ports:
-      - "80:80"
-    restart: unless-stopped
-
   api:
     build:
       context: api
