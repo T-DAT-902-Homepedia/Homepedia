@@ -1,1 +1,0 @@
-# Architectural Descision Records
